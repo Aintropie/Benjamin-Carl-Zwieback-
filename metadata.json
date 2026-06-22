@@ -1,0 +1,6 @@
+{
+  "name": "GTA Dortmund - Arbeitstitel",
+  "description": "An openworld 2D canvas sandbox game inspired by GTA set in Dortmund, featuring driving, walking, cop heat, traffic, day/night cycles, weather, radio, and mini-map.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
