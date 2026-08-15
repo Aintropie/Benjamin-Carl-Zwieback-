@@ -28,6 +28,7 @@ import RadioPlayer from './components/RadioPlayer';
 import MatrixTerminal from './components/MatrixTerminal';
 import LandmarkDetails from './components/LandmarkDetails';
 import CloudTwinConsole from './components/CloudTwinConsole';
+import ForensicAuditDashboard from './components/ForensicAuditDashboard';
 import { useGameSync } from './lib/GameSync';
 import { GameState, Mission, WeatherType, Weapon, WeaponType } from './types';
 import { audio } from './utils/audio';
@@ -121,6 +122,7 @@ export default function App() {
   const [cheatCode, setCheatCode] = useState<string>('');
   const [showWelcome, setShowWelcome] = useState<boolean>(true);
   const [recentCompletedMission, setRecentCompletedMission] = useState<string | null>(null);
+  const [currentView, setCurrentView] = useState<'sandbox' | 'audit_report'>('sandbox');
 
   const handleMuteToggle = (muted: boolean) => {
     setGameState(prev => ({ ...prev, isMuted: muted }));
@@ -247,6 +249,32 @@ export default function App() {
           </div>
         </div>
 
+        {/* Navigation View Selector Tabs */}
+        <div className="flex items-center gap-1 bg-slate-950 p-1.5 rounded-2xl border border-slate-800">
+          <button
+            id="view-sandbox-btn"
+            onClick={() => setCurrentView('sandbox')}
+            className={`px-3.5 py-1.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
+              currentView === 'sandbox'
+                ? 'bg-yellow-500 text-slate-950 shadow-md shadow-yellow-500/20'
+                : 'text-slate-400 hover:text-white hover:bg-slate-900'
+            }`}
+          >
+            🕹️ Cyber Ruhr Sandbox
+          </button>
+          <button
+            id="view-audit-report-btn"
+            onClick={() => setCurrentView('audit_report')}
+            className={`px-3.5 py-1.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
+              currentView === 'audit_report'
+                ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
+                : 'text-slate-400 hover:text-white hover:bg-slate-900'
+            }`}
+          >
+            📊 Drive Forensic Audit Report
+          </button>
+        </div>
+
         {/* Top bar values: Clock and Weather panel */}
         <div className="flex items-center gap-3">
           
@@ -299,7 +327,12 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Grid Workspace */}
+      {/* Main Workspace Body */}
+      {currentView === 'audit_report' ? (
+        <main className="flex-1 p-6 max-w-7xl mx-auto w-full">
+          <ForensicAuditDashboard />
+        </main>
+      ) : (
       <main className="flex-1 p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-7xl mx-auto w-full">
         
         {/* Left Interactive Game Board (Canvas Column) */}
@@ -490,6 +523,7 @@ export default function App() {
 
         </div>
       </main>
+      )}
 
       {/* Full screen Mission Passed congrats overlay animation */}
       {recentCompletedMission && (
